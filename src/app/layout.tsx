@@ -6,7 +6,7 @@ import { ThemeProvider } from '@/contexts/ThemeContext';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { 
-  generateOrganizationSchema, 
+  OrganizationSchema, 
   generateWebsiteSchema, 
   generateLocalBusinessSchema,
   SEO_CONSTANTS 
@@ -93,7 +93,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   // Generate global structured data
-  const organizationSchema = generateOrganizationSchema();
+  const organizationSchema = OrganizationSchema();
   const websiteSchema = generateWebsiteSchema();
   const localBusinessSchema = generateLocalBusinessSchema();
 

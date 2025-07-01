@@ -156,7 +156,7 @@ export interface LocalBusinessSchema {
 }
 
 // Schema generators
-export function generateOrganizationSchema(): OrganizationSchema {
+export function OrganizationSchema(): OrganizationSchema {
   return {
     '@context': 'https://schema.org',
     '@type': 'Organization',
@@ -420,6 +420,18 @@ export const SEO_CONSTANTS = {
     'construction machinery',
     'heavy equipment'
   ],
+  LEGAL_KEYWORDS: [
+    'equipment rental terms',
+    'machinery sales',
+    'construction equipment policies',
+    'heavy equipment rental',
+    'industrial machinery',
+    'equipment warranty',
+    'rental agreement',
+    'equipment purchase',
+    'machinery maintenance',
+    'safety guidelines'
+  ],
 };
 
 // Helper functions for specific page types
@@ -486,5 +498,68 @@ export function generateBlogPageSEO(post: BlogPost): SEOConfig {
     post.featuredImage,
     'article',
     post.tags
+  );
+}
+
+export function generatePrivacyPolicySEO(): SEOConfig {
+  return generatePageSEO(
+    'Privacy Policy',
+    'Learn how RR Equipment protects and handles your personal information, data collection practices, and privacy measures.',
+    '/privacy-policy',
+    undefined,
+    'website',
+    [
+      'privacy policy',
+      'data protection',
+      'personal information',
+      'data security',
+      'user privacy',
+      'information collection',
+      'data handling',
+      'privacy measures',
+      ...SEO_CONSTANTS.LEGAL_KEYWORDS
+    ]
+  );
+}
+
+export function generateTermsAndConditionsSEO(): SEOConfig {
+  return generatePageSEO(
+    'Terms and Conditions',
+    'Read the terms and conditions for using RR Equipment services, including equipment rental, sales, and website usage guidelines.',
+    '/terms-and-conditions',
+    undefined,
+    'website',
+    [
+      'terms and conditions',
+      'service terms',
+      'usage guidelines',
+      'legal terms',
+      'equipment rental terms',
+      'sales conditions',
+      'service agreement',
+      'user agreement',
+      ...SEO_CONSTANTS.LEGAL_KEYWORDS
+    ]
+  );
+}
+
+export function generateRefundPolicySEO(): SEOConfig {
+  return generatePageSEO(
+    'Refund Policy',
+    'Understand RR Equipment refund and return policies for equipment purchases and rentals, including eligibility and process.',
+    '/refund-policy',
+    undefined,
+    'website',
+    [
+      'refund policy',
+      'return policy',
+      'equipment returns',
+      'refund process',
+      'return eligibility',
+      'purchase returns',
+      'rental refunds',
+      'money back guarantee',
+      ...SEO_CONSTANTS.LEGAL_KEYWORDS
+    ]
   );
 } 
