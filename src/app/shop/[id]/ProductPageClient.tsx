@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Equipment } from '@/types/content';
-import { AnimatedButton } from '@/components/AnimatedButton';
+import AnimatedButton from '@/components/AnimatedButton';
 
 interface ProductPageClientProps {
   equipment: Equipment;

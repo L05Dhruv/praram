@@ -333,7 +333,7 @@ export interface SEOConfig {
     title: string;
     description: string;
     image: string;
-    type: 'website' | 'article' | 'product';
+    type: 'website' | 'article';
     url?: string;
     siteName?: string;
     locale?: string;
@@ -346,7 +346,7 @@ export interface SEOConfig {
     site?: string;
     creator?: string;
   };
-  jsonLd?: any[];
+  jsonLd?: object[];
 }
 
 // Advanced SEO utilities
@@ -428,7 +428,7 @@ export function generatePageSEO(
   description: string,
   path: string,
   image?: string,
-  type: 'website' | 'article' | 'product' = 'website',
+  type: 'website' | 'article' = 'website',
   additionalKeywords: string[] = []
 ): SEOConfig {
   const keywords = [...SEO_CONSTANTS.DEFAULT_KEYWORDS, ...additionalKeywords];
@@ -473,7 +473,7 @@ export function generateProductPageSEO(equipment: Equipment): SEOConfig {
     equipment.description,
     `/shop/${equipment.id}`,
     equipment.imageSrcs[0],
-    'product',
+    'website',
     keywords
   );
 }

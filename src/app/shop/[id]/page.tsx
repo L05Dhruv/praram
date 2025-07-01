@@ -17,7 +17,9 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
-  const equipment = getEquipmentById(params.id);
+  const { id } = await params;
+  const equipment = await getEquipmentById(id);
+  console.log(equipment);
 
   if (!equipment) {
     return {
@@ -39,8 +41,10 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
   };
 }
 
-export default function ProductPage({ params }: ProductPageProps) {
-  const equipment = getEquipmentById(params.id);
+export default async function ProductPage({ params }: ProductPageProps) {
+  const { id } = await params;
+  const equipment = await getEquipmentById(id);
+  console.log(equipment);
 
   if (!equipment) {
     notFound();
