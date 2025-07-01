@@ -1,0 +1,43 @@
+# robots.txt for RR Equipment
+# This file tells search engine crawlers which URLs they can access on the site
+
+User-agent: *
+Allow: /
+
+# Disallow admin and private areas
+Disallow: /routes/admin/
+Disallow: /api/
+Disallow: /_next/
+Disallow: /admin/
+Disallow: /private/
+
+# Allow access to important directories
+Allow: /shop/
+Allow: /blog/
+Allow: /about/
+Allow: /auth/signin
+
+# Specific rules for Googlebot
+User-agent: Googlebot
+Allow: /
+Disallow: /routes/admin/
+Disallow: /api/
+
+# Specific rules for Bingbot
+User-agent: Bingbot
+Allow: /
+Disallow: /routes/admin/
+Disallow: /api/
+
+# Block specific crawlers if needed
+# User-agent: BadBot
+# Disallow: /
+
+# Crawl delay (optional - be careful with this)
+# Crawl-delay: 1
+
+# Sitemap location
+Sitemap: https://rrequipment.com/sitemap.xml
+
+# Host directive (helps with canonical domain)
+Host: https://rrequipment.com 
