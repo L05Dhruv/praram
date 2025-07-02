@@ -2,6 +2,7 @@ export interface User {
   id: string;
   email: string;
   role: 'admin' | 'user';
+  password?: string; // Only used internally, never sent to client
   firstName?: string;
   lastName?: string;
   createdAt: Date;

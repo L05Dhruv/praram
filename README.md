@@ -1,10 +1,12 @@
-# RR Equipment Web Frontend
+# Praram
 
 A modern, fully-featured, powerful web app template built with Next.js 14, TypeScript, Tailwind CSS, and Framer Motion.
 
 Have you ever wanted to spin up a powerful frontend quickly? You can use tools like v0, lovable, bolt or firebase studio to do this easily and for free (kinda). But what should you include? Good code practices like modularity, DRY code and sensible architecture? UI nice-to-haves like high interactivity, mobile responsiveness and themes? TypeScript set up in a minimal, yet effective way? All this is included in Praram.js!
 
 I chose the name Praram because it means "start" or "beginning" in Telugu, the language of my ancestors. My vision for this open source project is to maintain a powerful starter kit that encompasses all important aspects of an e-commerce-like web application: Good architecture, powerful SEO, testing and scalability.
+
+The starter kit presents an e-commerce web app that sells industrial equipment. Modify it to your needs.
 
 ## 🚀 Features
 

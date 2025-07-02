@@ -1,0 +1,8 @@
+<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="300" fill="#f3f4f6"/>
+  <rect x="50" y="50" width="300" height="200" fill="#e5e7eb" stroke="#d1d5db" stroke-width="2"/>
+  <circle cx="200" cy="150" r="30" fill="#9ca3af"/>
+  <rect x="170" y="120" width="60" height="60" fill="none" stroke="#6b7280" stroke-width="2"/>
+  <text x="200" y="220" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#6b7280">No Image Available</text>
+  <text x="200" y="240" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#9ca3af">Equipment Image</text>
+</svg> 

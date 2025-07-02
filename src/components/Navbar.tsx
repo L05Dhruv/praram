@@ -2,9 +2,11 @@
 
 import Link from 'next/link';
 import { useTheme } from '@/contexts/ThemeContext';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function Navbar() {
   const { theme, toggleTheme } = useTheme();
+  const { user, signOut } = useAuth();
 
   return (
     <nav className="bg-white dark:bg-gray-800 shadow-lg">
@@ -20,7 +22,24 @@ export default function Navbar() {
             <Link href="/about" className="text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white">About</Link>
             <Link href="/blog" className="text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white">Blog</Link>
             <Link href="/shop" className="text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white">Shop</Link>
-            <Link href="/auth/signin" className="text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white">Sign In</Link>
+            {/* Show admin link for admin users or in development mode */}
+            {(user?.role === 'admin' || (!user && process.env.NODE_ENV === 'development')) && (
+              <Link href="/admin" className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium">
+                Admin
+              </Link>
+            )}
+            {user ? (
+              <button
+                onClick={() => signOut()}
+                className="text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white"
+              >
+                Sign Out
+              </button>
+            ) : (
+              <Link href="/auth/signin" className="text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white">
+                Sign In
+              </Link>
+            )}
             <button
               onClick={toggleTheme}
               className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200"

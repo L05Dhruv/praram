@@ -9,6 +9,7 @@ export default function SignInPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [retryAfter, setRetryAfter] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const { signIn } = useAuth();
@@ -16,16 +17,37 @@ export default function SignInPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setRetryAfter(null);
     setIsLoading(true);
 
     try {
       await signIn(email, password);
       router.push('/');
-    } catch {
-      setError('Invalid email or password');
+    } catch (err: any) {
+      const errorMessage = err.message || 'An error occurred';
+      setError(errorMessage);
+
+      // Check if it's a rate limiting error
+      if (errorMessage.includes('Too many login attempts')) {
+        // Extract retry time if available (this would come from the API response)
+        const retryMatch = errorMessage.match(/try again in (\d+) seconds/);
+        if (retryMatch) {
+          setRetryAfter(parseInt(retryMatch[1]));
+        }
+      }
     } finally {
       setIsLoading(false);
     }
+  };
+
+  // Format retry time display
+  const formatRetryTime = (seconds: number) => {
+    if (seconds < 60) {
+      return `${seconds} seconds`;
+    }
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes} minute${minutes > 1 ? 's' : ''}${remainingSeconds > 0 ? ` and ${remainingSeconds} seconds` : ''}`;
   };
 
   return (
@@ -35,11 +57,31 @@ export default function SignInPage() {
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
             Sign in to your account
           </h2>
+          <div className="mt-4 p-4 bg-blue-50 dark:bg-blue-900/30 rounded-lg">
+            <h3 className="text-sm font-medium text-blue-800 dark:text-blue-200 mb-2">Demo Credentials:</h3>
+            <p className="text-xs text-blue-700 dark:text-blue-300">
+              <strong>Admin:</strong> admin@example.com / admin123<br/>
+              <strong>User:</strong> user@example.com / user123
+            </p>
+          </div>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           {error && (
-            <div className="rounded-md bg-red-50 dark:bg-red-900/30 p-4">
-              <div className="text-sm text-red-700 dark:text-red-200">{error}</div>
+            <div className={`rounded-md p-4 ${error.includes('Too many login attempts') 
+              ? 'bg-orange-50 dark:bg-orange-900/30' 
+              : 'bg-red-50 dark:bg-red-900/30'
+            }`}>
+              <div className={`text-sm ${error.includes('Too many login attempts')
+                ? 'text-orange-700 dark:text-orange-200'
+                : 'text-red-700 dark:text-red-200'
+              }`}>
+                {error}
+                {retryAfter && (
+                  <div className="mt-2 text-xs">
+                    Please wait {formatRetryTime(retryAfter)} before trying again.
+                  </div>
+                )}
+              </div>
             </div>
           )}
           <div className="rounded-md shadow-sm -space-y-px">
@@ -82,8 +124,9 @@ export default function SignInPage() {
               type="submit"
               className="w-full"
               isLoading={isLoading}
+              disabled={isLoading || (retryAfter !== null && retryAfter > 0)}
             >
-              Sign in
+              {retryAfter && retryAfter > 0 ? `Wait ${retryAfter}s` : 'Sign in'}
             </AnimatedButton>
           </div>
         </form>

@@ -1,12 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-
-interface User {
-  id: string;
-  email: string;
-  role: 'admin' | 'user';
-}
+import { User } from '@/types/auth';
 
 interface AuthContextType {
   user: User | null;
@@ -22,27 +17,46 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check for stored session
-    const checkAuth = async () => {
+    // Check for existing session on mount
+    const checkSession = async () => {
       try {
-        // Add your session check logic here
-        setLoading(false);
+        const response = await fetch('/api/auth/session', {
+          method: 'GET',
+          credentials: 'include', // Include cookies
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setUser(data.user);
+        }
       } catch (error) {
-        console.error('Auth check failed:', error);
+        console.error('Session check failed:', error);
+      } finally {
         setLoading(false);
       }
     };
 
-    checkAuth();
+    checkSession();
   }, []);
 
   const signIn = async (email: string, password: string) => {
     try {
-      // Add your sign in logic here
-      // For example:
-      // const response = await fetch('/api/auth/signin', ...);
-      // const data = await response.json();
-      // setUser(data.user);
+      const response = await fetch('/api/auth/signin', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include', // Include cookies
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Sign in failed');
+      }
+
+      setUser(data.user);
     } catch (error) {
       console.error('Sign in failed:', error);
       throw error;
@@ -51,8 +65,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signOut = async () => {
     try {
-      // Add your sign out logic here
-      setUser(null);
+      const response = await fetch('/api/auth/signout', {
+        method: 'POST',
+        credentials: 'include', // Include cookies
+      });
+
+      if (response.ok) {
+        setUser(null);
+      }
     } catch (error) {
       console.error('Sign out failed:', error);
       throw error;
