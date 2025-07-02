@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getBlogPost, getBlogPosts } from '@/lib/blog';
 import { generateBlogPostSchema, generateBlogPageSEO, generateBreadcrumbSchema } from '@/lib/seo';
-import BlogPostClient from './BlogPostClient';
+import BlogPostClient from '@/app/blog/[slug]/BlogPostClient';
 
 interface BlogPostPageProps {
   params: {
@@ -18,7 +18,8 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
-  const post = await getBlogPost(params.slug);
+  const { slug } = await params;
+  const post = await getBlogPost(slug);
 
   if (!post) {
     return {
@@ -46,7 +47,8 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
 }
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
-  const post = await getBlogPost(params.slug);
+  const { slug } = await params;
+  const post = await getBlogPost(slug);
 
   if (!post) {
     notFound();

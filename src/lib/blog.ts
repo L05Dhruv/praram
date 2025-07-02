@@ -17,7 +17,7 @@ export interface BlogPost {
 }
 
 // Mock blog posts data - in a real app, this would come from a CMS or database
-const mockPosts: BlogPost[] = [
+let mockPosts: BlogPost[] = [
   {
     slug: 'best-excavator-maintenance-tips',
     title: 'Essential Excavator Maintenance Tips for Maximum Performance',
@@ -169,4 +169,63 @@ export async function getBlogPostsByTag(tag: string): Promise<BlogPost[]> {
   return mockPosts.filter(post => 
     post.tags.some(postTag => postTag.toLowerCase() === tag.toLowerCase())
   );
+}
+
+// Admin functions for managing blog posts
+export async function createBlogPost(post: BlogPost): Promise<BlogPost> {
+  // Check if slug already exists
+  const existingPost = mockPosts.find(p => p.slug === post.slug);
+  if (existingPost) {
+    throw new Error('A post with this slug already exists');
+  }
+
+  mockPosts.unshift(post); // Add to beginning of array
+  return post;
+}
+
+export async function updateBlogPost(slug: string, updatedPost: Partial<BlogPost>): Promise<BlogPost> {
+  const index = mockPosts.findIndex(post => post.slug === slug);
+  if (index === -1) {
+    throw new Error('Blog post not found');
+  }
+
+  // If slug is being changed, check it doesn't conflict
+  if (updatedPost.slug && updatedPost.slug !== slug) {
+    const existingPost = mockPosts.find(p => p.slug === updatedPost.slug);
+    if (existingPost) {
+      throw new Error('A post with this slug already exists');
+    }
+  }
+
+  mockPosts[index] = { ...mockPosts[index], ...updatedPost };
+  return mockPosts[index];
+}
+
+export async function deleteBlogPost(slug: string): Promise<boolean> {
+  const index = mockPosts.findIndex(post => post.slug === slug);
+  if (index === -1) {
+    return false;
+  }
+
+  mockPosts.splice(index, 1);
+  return true;
+}
+
+// Helper function to generate slug from title
+export function generateSlug(title: string): string {
+  return title
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, '') // Remove special characters
+    .replace(/\s+/g, '-') // Replace spaces with hyphens
+    .replace(/-+/g, '-') // Replace multiple hyphens with single
+    .trim();
+}
+
+// Helper function to calculate read time from HTML content
+export function calculateReadTime(htmlContent: string): number {
+  // Strip HTML tags and count words
+  const text = htmlContent.replace(/<[^>]*>/g, '');
+  const wordCount = text.trim().split(/\s+/).length;
+  // Average reading speed is about 200 words per minute
+  return Math.max(1, Math.ceil(wordCount / 200));
 } 

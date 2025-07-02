@@ -78,6 +78,17 @@ export default function AdminDashboard() {
               </Link>
               
               <Link
+                href="/admin/blog"
+                className="p-4 border-2 border-gray-200 rounded-lg hover:border-orange-500 hover:bg-orange-50 transition-colors"
+              >
+                <div className="text-center">
+                  <div className="text-2xl mb-2">📝</div>
+                  <h3 className="font-semibold text-gray-900">Manage Blog</h3>
+                  <p className="text-sm text-gray-600 mt-1">Create and edit blog posts</p>
+                </div>
+              </Link>
+              
+              <Link
                 href="/admin/security"
                 className="p-4 border-2 border-gray-200 rounded-lg hover:border-red-500 hover:bg-red-50 transition-colors"
               >
